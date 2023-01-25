@@ -1,5 +1,7 @@
 import * as THREE from "../three.js-master/build/three.module.js";
 import { OrbitControls } from "../three.js-master/examples/jsm/controls/OrbitControls.js";
+import { FontLoader } from "../three.js-master/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "../three.js-master/examples/jsm/geometries/TextGeometry.js";
 
 class App {
   constructor() {
@@ -41,7 +43,9 @@ class App {
     const height = this._divContainer.clientHeight;
     // 이 크기를 이용해서 camera 객체를 생성하고
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
-    camera.position.z = 2;
+    // camera 위치조절
+    camera.position.z = 15;
+    camera.position.x = -15;
     // camera 객체를 또 다른 메서드에서 사용할 수 있도록 핋드객체(this._camera)로 정의
     this._camera = camera;
   }
@@ -57,18 +61,15 @@ class App {
     this._scene.add(light);
   }
 
+  // (1)
   _setupModel() {
     // const geometry = new THREE.BoxGeometry(1, 1, 1);
     // const material = new THREE.MeshPhongMaterial({ color: 0x44a88 });
     // const cube = new THREE.Mesh(geometry, material);
-
     // this._scene.add(cube);
     // this._cube = cube;
-
     //////////////////////////////////////////////////////////////////////////////////////////////
-
     // geometry 종륲
-
     //// box
     // const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
     //// circle
@@ -104,24 +105,177 @@ class App {
     // const geometry = new THREE.TorusGeometry(0.5, 0.5, 10, 32, Math.PI);
     //// torusknot >> 활용도는 떨어짐
     // const geometry = new THREE.TorusKnotGeometry(0.6, 0.1, 64, 32, 3, 4);
-    const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x515151 });
-    const cube = new THREE.Mesh(geometry, fillMaterial);
+    // const shape = new THREE.Shape();
+    // const x = -2.5,
+    //   y = -5;
+    // shape.moveTo(x + 2.5, y + 2.5);
+    // shape.bezierCurveTo(x + 2.5, y + 2.5, x + 2, y, x, y);
+    // shape.bezierCurveTo(x - 3, y, x - 3, y + 3.5, x - 3, y + 3.5);
+    // shape.bezierCurveTo(x - 3, y + 5.5, x - 1.5, y + 7.7, x + 2.5, y + 9.5);
+    // shape.bezierCurveTo(x + 6, y + 7.7, x + 8, y + 4.5, x + 8, y + 3.5);
+    // shape.bezierCurveTo(x + 8, y + 3.5, x + 8, y, x + 5, y);
+    // shape.bezierCurveTo(x + 3.5, y, x + 2.5, y + 2.5, x + 2.5, y + 2.5);
+    // const geometry = new THREE.ShapeGeometry(shape);
+    // class CustomSinCurve extends THREE.Curve {
+    //   constructor(scale) {
+    //     super();
+    //     this.scale = scale;
+    //   }
+    //   getPoint(t) {
+    //     const tx = t * 3 - 1.5;
+    //     const ty = Math.sin(2 * Math.PI * t);
+    //     const tz = 0;
+    //     return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+    //   }
+    // }
+    // const path = new CustomSinCurve(4);
+    // const geometry = new THREE.TubeGeometry(path, 40, 0.8, 10, true);
 
-    const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
-    const line = new THREE.LineSegments(
-      // wireframe 형태로 geometry를 표현하기 위함
-      // 지우면 외곽선이 표시가 안됨
-      new THREE.WireframeGeometry(geometry),
-      lineMaterial
-    );
+    // const points = [];
+    // for (let i = 0; i < 10; ++i) {
+    //   points.push(new THREE.Vector2(Math.sin(i * 0.2) * 3 + 3, (i - 5) * 8));
+    // }
 
-    const group = new THREE.Group();
-    group.add(cube);
-    group.add(line);
+    // const geometry = new THREE.LatheGeometry(points, 32, 0, Math.PI);
 
-    this._scene.add(group);
-    this._cube = group;
+    //////////////////////////////////////////////////////////////////////////////
+
+    const fontLoader = new FontLoader();
+    async function loadFont(that) {
+      const url =
+        "../three.js-master/examples/fonts/helvetiker_regular.typeface.json";
+      const font = await new Promise((res, rej) => {
+        fontLoader.load(url, res, undefined, rej);
+      });
+
+      const geometry = new TextGeometry("KSH", {
+        font: font,
+        size: 10,
+        height: 2,
+        curveSegment: 64,
+        bevelEnabled: true,
+        bevelThickness: 0.2,
+        bevelSize: 0.2,
+        bevelSegments: 10,
+      });
+
+      const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x515151 });
+      const cube = new THREE.Mesh(geometry, fillMaterial);
+
+      const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+      const line = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geometry),
+        lineMaterial
+      );
+
+      const group = new THREE.Group();
+      group.add(cube);
+      group.add(line);
+
+      that._scene.add(group);
+      that._cube = group;
+    }
+    loadFont(this);
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
+    // const shape = new THREE.Shape();
+    // const x = -2.5,
+    //   y = -5;
+    // shape.moveTo(x + 2.5, y + 2.5);
+    // shape.bezierCurveTo(x + 2.5, y + 2.5, x + 2, y, x, y);
+    // shape.bezierCurveTo(x - 3, y, x - 3, y + 3.5, x - 3, y + 3.5);
+    // shape.bezierCurveTo(x - 3, y + 5.5, x - 1.5, y + 7.7, x + 2.5, y + 9.5);
+    // shape.bezierCurveTo(x + 6, y + 7.7, x + 8, y + 4.5, x + 8, y + 3.5);
+    // shape.bezierCurveTo(x + 8, y + 3.5, x + 8, y, x + 5, y);
+    // shape.bezierCurveTo(x + 3.5, y, x + 2.5, y + 2.5, x + 2.5, y + 2.5);
+
+    // // ExtrudeGeometry의 설정값
+    // const settings = {
+    //   steps: 1,
+    //   depth: 4,
+    //   bevelEnabled: true,
+    //   bevelThickness: 0.4,
+    //   bevelSize: 0.2,
+    //   bevelSegments: 1,
+    // };
+
+    // const geometry = new THREE.ExtrudeGeometry(shape, settings);
+
+    // const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x515151 });
+    // const cube = new THREE.Mesh(geometry, fillMaterial);
+    // const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
+    // const line = new THREE.LineSegments(
+    //   // wireframe 형태로 geometry를 표현하기 위함
+    //   // 지우면 외곽선이 표시가 안됨
+    //   new THREE.WireframeGeometry(geometry),
+    //   lineMaterial
+    // );
+    // const group = new THREE.Group();
+    // group.add(cube);
+    // group.add(line);
+    // this._scene.add(group);
+    // this._cube = group;
   }
+
+  // (2)
+  // _setupModel() {
+  //   const shape = new THREE.Shape();
+  //   //// 사각형
+  //   // shape.moveTo(1, 1);
+  //   // shape.lineTo(1, -1);
+  //   // shape.lineTo(-1, -1);
+  //   // shape.lineTo(-1, 1);
+  //   // shape.closePath();
+
+  //   //// 하트
+  //   const x = -2.5,
+  //     y = -5;
+  //   shape.moveTo(x + 2.5, y + 2.5);
+  //   shape.bezierCurveTo(x + 2.5, y + 2.5, x + 2, y, x, y);
+  //   shape.bezierCurveTo(x - 3, y, x - 3, y + 3.5, x - 3, y + 3.5);
+  //   shape.bezierCurveTo(x - 3, y + 5.5, x - 1.5, y + 7.7, x + 2.5, y + 9.5);
+  //   shape.bezierCurveTo(x + 6, y + 7.7, x + 8, y + 4.5, x + 8, y + 3.5);
+  //   shape.bezierCurveTo(x + 8, y + 3.5, x + 8, y, x + 5, y);
+  //   shape.bezierCurveTo(x + 3.5, y, x + 2.5, y + 2.5, x + 2.5, y + 2.5);
+
+  //   const geometry = new THREE.BufferGeometry();
+  //   const points = shape.getPoints();
+  //   geometry.setFromPoints(points);
+
+  //   const material = new THREE.LineBasicMaterial({ color: 0xffff00 });
+  //   const line = new THREE.Line(geometry, material);
+
+  //   this._scene.add(line);
+  // }
+
+  // // (3)
+  // // TubeGeometry >> 어떤 곡선을 따라서 원통이 이어지는 형태 , 먼저 곡선을 정의할수 있는 curve class를 파악해야한다.
+  // _setupModel() {
+  //   class CustomSinCurve extends THREE.Curve {
+  //     constructor(scale) {
+  //       super();
+  //       this.scale = scale;
+  //     }
+  //     getPoint(t) {
+  //       const tx = t * 3 - 1.5;
+  //       const ty = Math.sin(2 * Math.PI * t);
+  //       const tz = 0;
+  //       return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+  //     }
+  //   }
+
+  //   const path = new CustomSinCurve(4);
+
+  //   const geometry = new THREE.BufferGeometry();
+  //   const points = path.getPoints(30);
+  //   geometry.setFromPoints(points);
+
+  //   const material = new THREE.LineBasicMaterial({ color: 0xffff00 });
+  //   const line = new THREE.Line(geometry, material);
+
+  //   this._scene.add(line);
+  // }
 
   // 창 크기가 변경될때 발생하는 이벤트를 통해서 호출
   resize() {
