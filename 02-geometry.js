@@ -67,7 +67,43 @@ class App {
 
     //////////////////////////////////////////////////////////////////////////////////////////////
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
+    // geometry 종륲
+
+    //// box
+    // const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
+    //// circle
+    // const geometry = new THREE.CircleGeometry(0.9, 16, 0, Math.PI / 2);
+    //// cone
+    // const geometry = new THREE.ConeGeometry(0.9, 1.6, 8, 5, true, 0, Math.PI);
+    //// cylinder
+    // const geometry = new THREE.CylinderGeometry(
+    //   0.3,
+    //   0.3,
+    //   1.5,
+    //   5,
+    //   10,
+    //   true,
+    //   0,
+    //   Math.PI
+    // );
+    //// sphere
+    // const geometry = new THREE.SphereGeometry(
+    //   0.7,
+    //   32,
+    //   12,
+    //   0,
+    //   Math.PI,
+    //   0,
+    //   Math.PI / 2
+    // );
+    //// Ring
+    // const geometry = new THREE.RingGeometry(0.2, 0.5, 6, 2, 0, Math.PI);
+    //// plane >> GIS 3차원 지형을 표현하는데 유리
+    // const geometry = new THREE.PlaneGeometry(0.4, 1.4, 2, 4);
+    //// torus
+    // const geometry = new THREE.TorusGeometry(0.5, 0.5, 10, 32, Math.PI);
+    //// torusknot >> 활용도는 떨어짐
+    // const geometry = new THREE.TorusKnotGeometry(0.6, 0.1, 64, 32, 3, 4);
     const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x515151 });
     const cube = new THREE.Mesh(geometry, fillMaterial);
 
