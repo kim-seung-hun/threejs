@@ -3,6 +3,8 @@ import { OrbitControls } from "../three.js-master/examples/jsm/controls/OrbitCon
 import { FontLoader } from "../three.js-master/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "../three.js-master/examples/jsm/geometries/TextGeometry.js";
 
+// threejs study
+
 class App {
   constructor() {
     const divContainer = document.querySelector("#webg1-container");
@@ -45,7 +47,7 @@ class App {
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 100);
     // camera 위치조절
     camera.position.z = 15;
-    camera.position.x = -15;
+    camera.position.x = -10;
     // camera 객체를 또 다른 메서드에서 사용할 수 있도록 핋드객체(this._camera)로 정의
     this._camera = camera;
   }
@@ -148,9 +150,9 @@ class App {
         fontLoader.load(url, res, undefined, rej);
       });
 
-      const geometry = new TextGeometry("KSH", {
+      const geometry = new TextGeometry("MUZIKS", {
         font: font,
-        size: 10,
+        size: 5,
         height: 2,
         curveSegment: 64,
         bevelEnabled: true,
@@ -159,7 +161,7 @@ class App {
         bevelSegments: 10,
       });
 
-      const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x515151 });
+      const fillMaterial = new THREE.MeshPhongMaterial({ color: 0x990099 });
       const cube = new THREE.Mesh(geometry, fillMaterial);
 
       const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 });
